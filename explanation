@@ -1,0 +1,261 @@
+# IRIS MODLE PREDICTION
+
+---
+
+```python
+import pandas as pd
+
+import numpy as np
+
+from sklearn.datasets import load_iris
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load Iris dataset
+
+iris = load_iris()
+
+X = iris.data
+
+y = iris.target
+
+# Create a DataFrame for better visualization
+
+df = pd.DataFrame(data=np.c_[iris['data'], iris['target']], columns=iris['feature_names'] + ['target'])
+
+print(df.head())
+
+# Split the dataset into training and testing sets
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Standardize the features
+
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+
+X_test = scaler.transform(X_test)
+
+# Build the model
+
+model = LogisticRegression(random_state=42)
+
+# Train the model
+
+model.fit(X_train, y_train)
+
+# Make predictions
+
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+
+accuracy = accuracy_score(y_test, y_pred)
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+class_report = classification_report(y_test, y_pred)
+
+print(f'Accuracy: {accuracy}')
+
+print('Confusion Matrix:')
+
+print(conf_matrix)
+
+print('Classification Report:')
+
+print(class_report)
+```
+
+---
+
+# 1 Import libraries
+
+---
+
+### 
+
+### Libraries Import Karna:
+
+```python
+import pandas as pd
+
+import numpy as np
+
+from sklearn.datasets import load_iris
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+```
+
+- Sabse pehle, humne zaroori libraries import ki hain: `pandas` (data manipulation ke liye), `numpy` (numerical operations ke liye), aur `scikit-learn` (machine learning models ke liye).
+- **`load_iris`**: Iris dataset ko load karne ke liye use hota hai. Iris dataset ek famous dataset hai jo machine learning ke basics seekhne ke liye use hota hai.
+- **`train_test_split`**: Dataset ko training aur testing sets mein divide karne ke liye use hota hai.
+- **`StandardScaler`**: Features ko standardize (normalize) karne ke liye use hota hai, taaki unki values ek common scale par ho.
+- **`LogisticRegression`**: Logistic Regression model ko initialize karne ke liye use hota hai, jo ek supervised learning algorithm hai aur classification problems ke liye use hota hai.
+- **`accuracy_score`**, **`confusion_matrix`**, **`classification_report`**: Model ki performance ko evaluate karne ke liye use hote hain.
+    
+    ---
+    
+    # 2. Loading the Iris Dataset
+    
+    ---
+    
+
+```python
+iris = load_iris()
+```
+
+- **`iris`**: Yeh variable Iris dataset ko store karta hai, jismein 150 samples hain, aur har sample ke 4 features hain: `sepal length`, `sepal width`, `petal length`, aur `petal width`.
+- Dataset mein 3 classes hain (target variable): Iris Setosa, Iris Versicolor, aur Iris Virginica.
+    
+    ---
+    
+    # 3. **Splitting Data into Features (X) and Labels (y)**
+    
+    ---
+    
+    ```python
+    X = iris.data
+    
+    y = iris.target
+    ```
+    
+
+- **`X`**: Feature matrix hai jismein har sample ke features store kiye gaye hain. (e.g., Sepal length, Sepal width, etc.)
+- **`y`**: Target vector hai jismein har sample ke corresponding labels hain. (0: Setosa, 1: Versicolor, 2: Virginica)
+    
+    ---
+    
+    ### 4. **Splitting Data into Training and Testing Sets**
+    
+    ---
+    
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+
+- **`train_test_split`**: Yeh function data ko randomly training aur testing sets mein divide karta hai.
+- **`X_train`** aur **`y_train`**: Training data (features and labels) hai jo model ko train karne ke liye use hoga.
+- **`X_test`** aur **`y_test`**: Testing data (features and labels) hai jo model ki performance test karne ke liye use hoga.
+- **`test_size=0.3`**: Iska matlab hai ki 30% data testing ke liye aur 70% data training ke liye use hoga.
+- **`random_state=42`**: Isse data split har baar same tareeke se hota hai, reproducibility ke liye.
+
+### 5. **Standardizing the Features**
+
+```python
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+
+X_test = scaler.transform(X_test)
+```
+
+- **`StandardScaler`**: Yeh function features ko standardize karta hai, yani unko mean 0 aur standard deviation 1 ke scale par le aata hai.
+- **`fit_transform`**: Yeh function training data ko scale karta hai aur is scaling ko "fit" karta hai.
+- **`transform`**: Yeh function wahi scaling parameters ko testing data par apply karta hai. Testing data ko sirf transform karte hain, fit nahi.
+
+Standardization se model ki performance improve ho sakti hai, especially agar features ke scale bohot alag-alag ho.
+
+### 6. **Building and Training the Logistic Regression Model**
+
+model = LogisticRegression(random_state=42)
+
+model.fit(X_train, y_train)
+
+- **`LogisticRegression`**: Yeh ek linear model hai jo classification problems solve karta hai. Logistic Regression ko "logit model" bhi kehte hain.
+- **`random_state=42`**: Yeh seed value hai taaki results consistent aur reproducible rahein.
+- **`fit(X_train, y_train)`**: Yeh model ko training data par train karta hai, yani model features (X_train) aur labels (y_train) ke beech ke relationship ko seekhta hai.
+
+### 7. **Making Predictions**
+
+```python
+y_pred = model.predict(X_test)
+```
+
+- **`predict(X_test)`**: Yeh function testing data par predictions banata hai, yani har test sample ke liye ek predicted label generate karta hai.
+
+### 8. **Evaluating the Model**
+
+```python
+accuracy = accuracy_score(y_test, y_pred)
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+class_report = classification_report(y_test, y_pred)
+```
+
+- **`accuracy_score(y_test, y_pred)`**: Yeh function model ki accuracy calculate karta hai, yani kitne percent predictions sahi thi.
+- **`confusion_matrix(y_test, y_pred)`**: Yeh confusion matrix banata hai, jo har class ke liye correct aur incorrect predictions ko count karta hai.
+- **`classification_report(y_test, y_pred)`**: Yeh report deta hai jo precision, recall, aur F1-score ke saath model ki detailed performance show karti hai.
+
+### 9. **Printing Results**
+
+```python
+print(f'Accuracy: {accuracy}')
+
+print('Confusion Matrix:')
+
+print(conf_matrix)
+
+print('Classification Report:')
+
+print(class_report)
+```
+
+- **`print` statements**: Yeh sab calculated metrics ko print karte hain, taaki model ki performance ko check kiya ja sake.
+
+### Summary:
+
+Is code ka objective Iris dataset par ek Logistic Regression model train karna aur uski performance evaluate karna hai. Yeh model training data se seekhta hai aur phir unseen testing data par apni accuracy aur other metrics ke through evaluate hota hai.
+
+## **practice:**
+
+```python
+#import the labraries
+import pandas as pd
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# load the iris data
+iris=load_iris()
+X= iris.data
+y=iris.target
+
+#creating the data frame for better visualization
+df=pd.DataFrame(data=np.c_[iris['data'],iris['target']],columns=iris['feature_names']+['target'])
+print(df.head(1))
+
+#split the data into test and traing datasets
+X_train,X_test,y_test,y_train=train_test_split(X,y,test_size=0.3,random_state=42)
+print(X_test)
+print(X_train)
+print(y_test)
+print(y_train)
+
+#standardize the features
+sc=StandardScaler()
+X_train=sc.fit_transform(X_train)
+X_test=sc.transform(X_test)
+print("\n")
+print(X_train)
+print("\n")
+print(X_test)
+```
